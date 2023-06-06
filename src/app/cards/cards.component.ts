@@ -9,5 +9,8 @@ import { CARDS } from '../mock-cards';
   styleUrls: ['./cards.component.css'],
 })
 export class CardsComponent {
+  showNewCardModal = true;
   cards = CARDS;
+  onNewCardButtonClick = () => (this.showNewCardModal = true);
+  onCancelNewCardButtonClick = () => (this.showNewCardModal = false);
 }
