@@ -13,7 +13,7 @@ export class CardsComponent {
     title: '',
     description: '',
   };
-  showNewCardModal = true;
+  showNewCardModal = false;
   cards = CARDS;
   onNewCardButtonClick = () => (this.showNewCardModal = true);
   onCancelNewCardButtonClick = () => (this.showNewCardModal = false);
