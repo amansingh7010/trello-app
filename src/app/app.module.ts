@@ -5,6 +5,7 @@ import { NgIconsModule } from '@ng-icons/core';
 import {
   heroPlusCircle,
   heroArrowLeftOnRectangle,
+  heroXMark,
 } from '@ng-icons/heroicons/outline';
 
 import { AppComponent } from './app.component';
@@ -22,7 +23,11 @@ import { CardsComponent } from './cards/cards.component';
   imports: [
     BrowserModule,
     FormsModule,
-    NgIconsModule.withIcons({ heroPlusCircle, heroArrowLeftOnRectangle }),
+    NgIconsModule.withIcons({
+      heroPlusCircle,
+      heroXMark,
+      heroArrowLeftOnRectangle,
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],

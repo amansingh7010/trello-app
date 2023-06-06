@@ -9,8 +9,13 @@ import { CARDS } from '../mock-cards';
   styleUrls: ['./cards.component.css'],
 })
 export class CardsComponent {
+  card = {
+    title: '',
+    description: '',
+  };
   showNewCardModal = true;
   cards = CARDS;
   onNewCardButtonClick = () => (this.showNewCardModal = true);
   onCancelNewCardButtonClick = () => (this.showNewCardModal = false);
+  onSaveCardButtonClick = () => (this.showNewCardModal = false);
 }
