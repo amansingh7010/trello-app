@@ -27,6 +27,8 @@ const oauth = new OAuth(
 const login = (req, res) => {
   oauth.getOAuthRequestToken(function (error, token, tokenSecret, results) {
     console.log(results, token, tokenSecret);
+
+    // store in db
     oauth_secrets[token] = tokenSecret;
     res.redirect(
       `${authorizeURL}?oauth_token=${token}&name=${appName}&scope=${scope}&expiration=${expiration}`
@@ -45,14 +47,13 @@ const callback = (req, res) => {
     verifier,
     (error, accessToken, accessTokenSecret, results) => {
       console.log(accessToken, accessTokenSecret, results);
-      // In a real app, the accessToken and accessTokenSecret should be stored
+      // accessToken and accessTokenSecret should be stored
       oauth.getProtectedResource(
         "https://api.trello.com/1/members/me",
         "GET",
         accessToken,
         accessTokenSecret,
         (error, data, response) => {
-          // Now we can respond with data to show that we have access to your Trello account via OAuth
           // console.log("user data", data);
           res.send(data);
         }
