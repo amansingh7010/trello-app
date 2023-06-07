@@ -10,6 +10,7 @@ export class DashboardComponent {
   constructor(private router: Router) {}
 
   logout(): void {
+    localStorage.removeItem('loggedIn');
     this.router.navigate(['/login']);
   }
 }

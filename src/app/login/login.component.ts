@@ -10,6 +10,7 @@ export class LoginComponent {
   constructor(private router: Router) {}
 
   login(): void {
+    localStorage.setItem('loggedIn', 'true');
     this.router.navigate(['/']);
   }
 }
