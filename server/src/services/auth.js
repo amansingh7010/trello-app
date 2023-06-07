@@ -25,7 +25,7 @@ const oauth = new OAuth(
 );
 
 const login = (req, res) => {
-  console.log("[Auth Service]: Login started");
+  console.log("[services/auth]: Login started");
   oauth.getOAuthRequestToken(function (error, token, tokenSecret, results) {
     console.log(results, token, tokenSecret);
 

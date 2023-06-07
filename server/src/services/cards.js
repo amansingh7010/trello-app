@@ -2,11 +2,11 @@ const CARDS = require("../__mocks__/cards.json");
 
 const getCards = async (req, res) => {
   try {
-    console.log("[Cards Service]: Fetching Cards");
-    console.log("[Cards Service]: Fetched Cards Successfully");
+    console.log("[services/card]: Fetching Cards");
+    console.log("[services/card]: Fetched Cards Successfully");
     res.send(CARDS);
   } catch (e) {
-    console.log("[Cards Service]: Error while fetching cards");
+    console.log("[services/card]: Error while fetching cards");
     console.log(e);
     res.status(500).send();
   }
@@ -14,12 +14,12 @@ const getCards = async (req, res) => {
 
 const saveCard = async (req, res) => {
   try {
-    console.log("[Cards Service]: Saving Card");
+    console.log("[services/card]: Saving Card");
     console.log(req.body);
-    console.log("[Cards Service]: Saved Card Successfuly");
+    console.log("[services/card]: Saved Card Successfuly");
     res.send();
   } catch (e) {
-    console.log("[Cards Service]: Error while saving card");
+    console.log("[services/card]: Error while saving card");
     console.log(e);
     res.status(500).send();
   }
