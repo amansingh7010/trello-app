@@ -3,8 +3,8 @@ const { getCards, saveCard } = require("../services/cards");
 
 const router = new express.Router();
 
-router.get("/cards", getCards);
+router.get("/api/cards", getCards);
 
-router.post("/cards", saveCard);
+router.post("/api/cards", saveCard);
 
 module.exports = router;

@@ -1,66 +1,89 @@
-const OAuth = require("oauth").OAuth;
 const url = require("url");
 
-const requestURL = "https://trello.com/1/OAuthGetRequestToken";
-const accessURL = "https://trello.com/1/OAuthGetAccessToken";
-const authorizeURL = "https://trello.com/1/OAuthAuthorizeToken";
-const appName = "Trello App";
-const scope = "read,write,account";
-const expiration = "1hour";
+const { oauthClient, getAuthUrl } = require("../server/oauth");
+const OAuthToken = require("../models/oAuthToken");
 
-const key = process.env.TRELLO_API_KEY;
-const secret = process.env.TRELLO_OAUTH_SECRET;
-const loginCallback = process.env.REDIRECT_URI;
+const login = async (req, res) => {
+  try {
+    console.log("[services/auth/login] Login started");
+    oauthClient.getOAuthRequestToken(
+      async (error, token, tokenSecret, results) => {
+        const oAuthToken = new OAuthToken({ token, tokenSecret });
+        await oAuthToken.save();
 
-const oauth_secrets = {};
-
-const oauth = new OAuth(
-  requestURL,
-  accessURL,
-  key,
-  secret,
-  "1.0A",
-  loginCallback,
-  "HMAC-SHA1"
-);
-
-const login = (req, res) => {
-  console.log("[services/auth]: Login started");
-  oauth.getOAuthRequestToken(function (error, token, tokenSecret, results) {
-    console.log(results, token, tokenSecret);
-
-    // store in db
-    oauth_secrets[token] = tokenSecret;
-    res.send({
-      authUrl: `${authorizeURL}?oauth_token=${token}&name=${appName}&scope=${scope}&expiration=${expiration}`,
-    });
-  });
+        console.log("[services/auth/login] Saved OAuth token in DB");
+        res.send({
+          authUrl: getAuthUrl(token),
+        });
+      }
+    );
+  } catch (e) {
+    console.log("[services/auth/login] Error while logging in");
+    res.status(500).send();
+  }
 };
 
-const callback = (req, res) => {
-  const query = url.parse(req.url, true).query;
-  const token = query.oauth_token;
-  const tokenSecret = oauth_secrets[token];
-  const verifier = query.oauth_verifier;
-  oauth.getOAuthAccessToken(
-    token,
-    tokenSecret,
-    verifier,
-    (error, accessToken, accessTokenSecret, results) => {
-      console.log(accessToken, accessTokenSecret, results);
-      // accessToken and accessTokenSecret should be stored
-      oauth.getProtectedResource(
-        "https://api.trello.com/1/members/me",
-        "GET",
-        accessToken,
-        accessTokenSecret,
-        (error, data, response) => {
-          // console.log("user data", data);
-          res.send(data);
-        }
-      );
+const callback = async (req, res) => {
+  try {
+    const query = url.parse(req.url, true).query;
+    const token = query.oauth_token;
+    const verifier = query.oauth_verifier;
+
+    if (!query || !verifier || query === "" || verifier === "") {
+      console.log("[services/auth/callback] Missing query params");
+      return res.status(400).send({
+        error: `Missing query params 'oauth_token' or 'oauth_verifier'`,
+      });
     }
-  );
+
+    const oAuthToken = await OAuthToken.findOne({ token: token });
+
+    if (!oAuthToken) {
+      console.log("[services/auth/callback] OAuth token expired");
+      return res.status(401).send({
+        error: "OAuth token expired",
+      });
+    }
+
+    oauthClient.getOAuthAccessToken(
+      oAuthToken.token,
+      oAuthToken.tokenSecret,
+      verifier,
+      async (error, accessToken, accessTokenSecret, results) => {
+        console.log(accessToken, accessTokenSecret, results);
+
+        console.log(
+          "[services/auth/callback] Fetched OAuth access token from the provider"
+        );
+
+        oAuthToken.accessToken = accessToken;
+        oAuthToken.accessTokenSecret = accessTokenSecret;
+
+        await oAuthToken.save();
+        console.log(
+          "[services/auth/callback] Saved OAuth access token successfully"
+        );
+
+        res.send({ token: oAuthToken.token });
+
+        // oauthClient.getProtectedResource(
+        //   "https://api.trello.com/1/members/me",
+        //   "GET",
+        //   accessToken,
+        //   accessTokenSecret,
+        //   (error, data, response) => {
+        //     console.log(
+        //       "[services/auth/callback] Fetched user info from the provider"
+        //     );
+        //     res.send(data);
+        //   }
+        // );
+      }
+    );
+  } catch (e) {
+    console.log("[services/auth/callback] Error while redirecting");
+    res.status(500).send();
+  }
 };
 
 module.exports = {
