@@ -14,6 +14,7 @@ import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CardsComponent } from './cards/cards.component';
 import { AppRoutingModule } from './app-routing.module';
+import { RedirectComponent } from './redirect/redirect.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { AppRoutingModule } from './app-routing.module';
     LoginComponent,
     DashboardComponent,
     CardsComponent,
+    RedirectComponent,
   ],
   imports: [
     BrowserModule,

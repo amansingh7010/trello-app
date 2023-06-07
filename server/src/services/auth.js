@@ -25,14 +25,15 @@ const oauth = new OAuth(
 );
 
 const login = (req, res) => {
+  console.log("[Auth Service]: Login started");
   oauth.getOAuthRequestToken(function (error, token, tokenSecret, results) {
     console.log(results, token, tokenSecret);
 
     // store in db
     oauth_secrets[token] = tokenSecret;
-    res.redirect(
-      `${authorizeURL}?oauth_token=${token}&name=${appName}&scope=${scope}&expiration=${expiration}`
-    );
+    res.send({
+      authUrl: `${authorizeURL}?oauth_token=${token}&name=${appName}&scope=${scope}&expiration=${expiration}`,
+    });
   });
 };
 
