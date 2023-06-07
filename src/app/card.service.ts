@@ -19,7 +19,7 @@ export class CardService {
 
   getCards(): Observable<Card[]> {
     return this.http.get<Card[]>(this.cardsUrl).pipe(
-      tap((_) => console.log('fetched cards')),
+      tap((_) => console.log('Fetched cards')),
       catchError(this.handleError<Card[]>('getCards', []))
     );
   }
