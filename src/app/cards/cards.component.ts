@@ -29,6 +29,16 @@ export class CardsComponent {
     this.cardService.getCards().subscribe((cards) => (this.cards = cards));
   }
 
+  saveCard(): void {
+    this.cardService.saveCard(this.card).subscribe(() => {
+      this.showNewCardModal = false;
+      this.card = {
+        title: '',
+        description: '',
+      };
+    });
+  }
+
   onNewCardButtonClick(): void {
     this.showNewCardModal = true;
   }
