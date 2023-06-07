@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CardsComponent } from './cards/cards.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { CardsComponent } from './cards/cards.component';
       heroXMark,
       heroArrowLeftOnRectangle,
     }),
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
