@@ -13,9 +13,14 @@ export class AuthService {
   private redirectUrl = 'http://localhost:9000/callback';
 
   isLoggedIn(): boolean {
-    const isLoggedIn = localStorage.getItem('loggedIn');
-    if (isLoggedIn) return true;
+    const token = localStorage.getItem('token');
+    if (token) return true;
     return false;
+  }
+
+  getAccessToken(): any {
+    if (this.isLoggedIn()) return localStorage.getItem('token');
+    else return null;
   }
 
   login(): Observable<any> {
@@ -31,7 +36,7 @@ export class AuthService {
     const urlWithParams = `${this.redirectUrl}?oauth_token=${params['oauth_token']}&oauth_verifier=${params['oauth_verifier']}`;
     return this.http.get<any>(urlWithParams).pipe(
       tap((data) => {
-        localStorage.setItem('loggedIn', 'true');
+        localStorage.setItem('token', data.token);
         console.log('redirect success');
       }),
       catchError(this.handleError<any>('redirect'))
