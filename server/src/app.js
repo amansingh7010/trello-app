@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 
 const authRouter = require("./routers/auth");
+const cardsRouter = require("./routers/cards");
 
 const app = express();
 
@@ -10,5 +11,6 @@ app.use(express.json());
 app.use(cors());
 
 app.use(authRouter);
+app.use(cardsRouter);
 
 module.exports = app;

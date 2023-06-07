@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 import { Card } from '../card';
 import { CARDS } from '../mock-cards';
+import { CardService } from '../card.service';
 
 @Component({
   selector: 'app-cards',
@@ -9,13 +10,34 @@ import { CARDS } from '../mock-cards';
   styleUrls: ['./cards.component.css'],
 })
 export class CardsComponent {
-  card = {
+  constructor(private cardService: CardService) {}
+
+  ngOnInit(): void {
+    this.getCards();
+  }
+
+  card: Card = {
     title: '',
     description: '',
   };
+
   showNewCardModal = false;
-  cards = CARDS;
-  onNewCardButtonClick = () => (this.showNewCardModal = true);
-  onCancelNewCardButtonClick = () => (this.showNewCardModal = false);
-  onSaveCardButtonClick = () => (this.showNewCardModal = false);
+
+  cards: Card[] = [];
+
+  getCards(): void {
+    this.cardService.getCards().subscribe((cards) => (this.cards = cards));
+  }
+
+  onNewCardButtonClick(): void {
+    this.showNewCardModal = true;
+  }
+
+  onCancelNewCardButtonClick(): void {
+    this.showNewCardModal = false;
+  }
+
+  onSaveCardButtonClick(): void {
+    this.showNewCardModal = false;
+  }
 }

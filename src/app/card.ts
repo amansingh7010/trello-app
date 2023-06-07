@@ -1,6 +1,6 @@
 export interface Card {
-  id: number;
+  id?: number;
   title: string;
   description: string;
-  createdOn: Date;
+  createdOn?: Date;
 }
