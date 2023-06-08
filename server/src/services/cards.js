@@ -63,7 +63,7 @@ const saveCard = async (req, res) => {
         await card.save();
 
         console.log("[services/cards] Saved Card Successfuly");
-        res.send();
+        res.status(201).send();
       }
     );
   } catch (e) {

@@ -1,27 +1,185 @@
 # TrelloApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.0.4.
+This application uses Trello OAuth API and MongoDB to perform CRUD operations on a Trello Board.
 
-## Development server
+---
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Workflow
 
-## Code scaffolding
+1. Login using your Trello Account.
+2. Board is public and all cards can be viewed on the dashboard.
+3. Must accept Workspace invite using the invite link to be able to create, update and delete cards.
+   Invite Link: https://trello.com/invite/userapp45/ATTIdee15fbf953033376048319b26e0d47b86CE2029
+4. Cick on 'New' Button to create a card.
+5. Click on any card for update or delete operations.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+---
 
-## Build
+## API Endpoints
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+#### Authentication
 
-## Running unit tests
+<details>
+ <summary><code>GET</code> <code><b>/login</b></code> <code>(Initiates Trello OAuth Login)</code></summary>
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+##### Parameters
 
-## Running end-to-end tests
+> | name | type     | data type | description |
+> | ---- | -------- | --------- | ----------- |
+> | None | required | N/A       | N/A         |
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+##### Responses
 
-## Further help
+> | http code | content-type               | response                     |
+> | --------- | -------------------------- | ---------------------------- |
+> | `200`     | `application/json        ` | `{"authUrl": "URL"}`         |
+> | `400`     | `application/json`         | `{"error": "Error Message"}` |
+> | `500`     | `application/json`         |                              |
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+</details>
+
+<details>
+ <summary><code>GET</code> <code><b>/callback?oauth_token={token}&oauth_verifier={verifier}</b></code> <code>(Handles callback from Trello)</code></summary>
+
+##### Parameters
+
+> | name           | type     | data type | description |
+> | -------------- | -------- | --------- | ----------- |
+> | oauth_token    | required | string    | N/A         |
+> | oauth_verifier | required | string    | N/A         |
+
+##### Responses
+
+> | http code | content-type               | response                                                              |
+> | --------- | -------------------------- | --------------------------------------------------------------------- |
+> | `200`     | `application/json        ` | `{"token": "asjdbaasdasdasjdhhjabkasdbkajsdh"}`                       |
+> | `400`     | `application/json`         | `{"error": "Missing query params 'oauth_token' or 'oauth_verifier'"}` |
+> | `401`     | `application/json`         | `{"error": "OAuth token expired"}`                                    |
+> | `500`     | `application/json`         |                                                                       |
+
+</details>
+
+#### Dashboard
+
+<details>
+ <summary><code>GET</code> <code><b>/api/dashboard</b></code> <code>(Fetches dashboard data)</code></summary>
+
+##### Parameters
+
+> | name | type     | data type | description |
+> | ---- | -------- | --------- | ----------- |
+> | None | required | N/A       | N/A         |
+
+##### Responses
+
+> | http code | content-type               | response                         |
+> | --------- | -------------------------- | -------------------------------- |
+> | `200`     | `application/json        ` | `{"data": "{name: "John Doe"}"}` |
+> | `400`     | `application/json`         | `{"error": "Error Message"}`     |
+> | `500`     | `application/json`         |                                  |
+
+</details>
+
+#### Cards
+
+<details>
+ <summary><code>GET</code> <code><b>/api/cards</b></code> <code>(Fetches all cards from MongoDB)</code></summary>
+
+##### Parameters
+
+> | name | type     | data type | description |
+> | ---- | -------- | --------- | ----------- |
+> | None | required | N/A       | N/A         |
+
+##### Responses
+
+> | http code | content-type               | response                                         |
+> | --------- | -------------------------- | ------------------------------------------------ |
+> | `200`     | `application/json        ` | `[{"name": "Card Name", "desc": "description"}]` |
+> | `500`     | `application/json`         |                                                  |
+
+</details>
+
+<details>
+ <summary><code>POST</code> <code><b>/api/cards</b></code> <code>(Creates a new card and saves it to MongoDB and Trello)</code></summary>
+
+##### Parameters
+
+> | name | type     | data type | description |
+> | ---- | -------- | --------- | ----------- |
+> | None | required | N/A       | N/A         |
+
+##### Responses
+
+> | http code | content-type               | response                     |
+> | --------- | -------------------------- | ---------------------------- |
+> | `201`     | `application/json        ` |                              |
+> | `400`     | `application/json`         | `{"error": "Error Message"}` |
+> | `500`     | `application/json`         |                              |
+
+</details>
+
+<details>
+ <summary><code>PUT</code> <code><b>/api/cards/{id}</b></code> <code>(Updates a card by ID and saves it to MongoDB and Trello)</code></summary>
+
+##### Parameters
+
+> | name | type     | data type | description |
+> | ---- | -------- | --------- | ----------- |
+> | id   | required | string    | Card ID     |
+
+##### Responses
+
+> | http code | content-type       | response                               |
+> | --------- | ------------------ | -------------------------------------- |
+> | `200`     | `application/json` |                                        |
+> | `400`     | `application/json` | `{"error": "Missing required params"}` |
+> | `400`     | `application/json` | `{"error": "Card does not exist"}`     |
+> | `500`     | `application/json` |                                        |
+
+</details>
+
+<details>
+ <summary><code>DELETE</code> <code><b>/api/cards/{id}</b></code> <code>(Deletes a card by ID from MongoDB and Trello Board)</code></summary>
+
+##### Parameters
+
+> | name | type     | data type | description |
+> | ---- | -------- | --------- | ----------- |
+> | id   | required | string    | Card ID     |
+
+##### Responses
+
+> | http code | content-type       | response                               |
+> | --------- | ------------------ | -------------------------------------- |
+> | `200`     | `application/json` |                                        |
+> | `400`     | `application/json` | `{"error": "Missing required params"}` |
+> | `400`     | `application/json` | `{"error": "Card does not exist"}`     |
+> | `500`     | `application/json` |                                        |
+
+</details>
+
+---
+
+## MongoDB Schemas
+
+#### OAuth Token
+
+| name                | type       |
+| ------------------- | ---------- |
+| `id`                | `ObjectId` |
+| `token`             | `string`   |
+| `tokenSecret`       | `string`   |
+| `accessToken`       | `string`   |
+| `accessTokenSecret` | `string`   |
+
+#### Card
+
+| name            | type       |
+| --------------- | ---------- |
+| `id`            | `ObjectId` |
+| `name`          | `string`   |
+| `desc`          | `string`   |
+| `trelloCardId`  | `string`   |
+| `trelloBoardId` | `string`   |
+| `trelloListId`  | `string`   |
