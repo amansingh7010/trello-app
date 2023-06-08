@@ -10,11 +10,15 @@ const cardSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    creationDate: {
-      type: Date,
+    trelloCardId: {
+      type: String,
       required: true,
     },
-    trelloCardId: {
+    trelloListId: {
+      type: String,
+      required: true,
+    },
+    trelloBoardId: {
       type: String,
       required: true,
     },
