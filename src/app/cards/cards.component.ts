@@ -16,7 +16,7 @@ export class CardsComponent {
     this.getCards();
   }
 
-  card: Card = {
+  selectedCard: Card = {
     name: '',
     desc: '',
   };
@@ -30,9 +30,10 @@ export class CardsComponent {
   }
 
   saveCard(): void {
-    this.cardService.saveCard(this.card).subscribe(() => {
+    this.cardService.saveCard(this.selectedCard).subscribe(() => {
+      this.getCards();
       this.showNewCardModal = false;
-      this.card = {
+      this.selectedCard = {
         name: '',
         desc: '',
       };
