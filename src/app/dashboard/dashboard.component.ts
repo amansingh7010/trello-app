@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
+import { DashboardService } from './dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,10 +8,25 @@ import { Router } from '@angular/router';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent {
-  constructor(private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private dashboardService: DashboardService
+  ) {}
+
+  userFullName: string = '';
+
+  ngOnInit(): void {
+    this.getDashboardData();
+  }
+
+  getDashboardData(): void {
+    this.dashboardService.getDashboardData().subscribe((data) => {
+      console.log(data);
+      this.userFullName = data.fullName;
+    });
+  }
 
   logout(): void {
-    localStorage.removeItem('token');
-    this.router.navigate(['/login']);
+    this.authService.logout();
   }
 }

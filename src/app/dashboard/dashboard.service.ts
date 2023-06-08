@@ -3,31 +3,18 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
-import { Card } from './card';
-
 @Injectable({
   providedIn: 'root',
 })
-export class CardService {
+export class DashboardService {
   constructor(private http: HttpClient) {}
 
-  private cardsUrl = 'http://localhost:9000/api/cards';
+  private dashboardUrl = 'http://localhost:9000/api/dashboard';
 
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
-
-  getCards(): Observable<Card[]> {
-    return this.http.get<Card[]>(this.cardsUrl).pipe(
-      tap((_) => console.log('Fetched cards')),
-      catchError(this.handleError<Card[]>('getCards', []))
-    );
-  }
-
-  saveCard(card: Card): Observable<any> {
-    return this.http.post(this.cardsUrl, card, this.httpOptions).pipe(
-      tap((_) => console.log('Saved New Card')),
-      catchError(this.handleError<any>('saveCard'))
+  getDashboardData(): Observable<any> {
+    return this.http.get<any>(this.dashboardUrl).pipe(
+      tap((_) => console.log('Fetched dashboard data')),
+      catchError(this.handleError<any>('getDashboardData', []))
     );
   }
 
