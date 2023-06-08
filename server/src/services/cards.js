@@ -73,4 +73,109 @@ const saveCard = async (req, res) => {
   }
 };
 
-module.exports = { getCards, saveCard };
+const updateCard = async (req, res) => {
+  try {
+    console.log("[services/cards] Updating Card");
+
+    const id = req.params.id;
+
+    if (!id) {
+      console.log("[services/cards Missing card id");
+      return res.status(400).send({ error: "Missing card id" });
+    }
+
+    const card = await Card.findById(id);
+
+    if (!card) {
+      console.log("[services/cards Card does not exist");
+      return res.status(404).send({ error: "Card does not exist" });
+    }
+
+    const cardName = req.body.name;
+    const cardDesc = req.body.desc;
+
+    if (!cardName || !cardDesc) {
+      console.log("[services/cards] Missing required params");
+      return res.status(400).send({ error: "Missing required params" });
+    }
+
+    card.name = cardName;
+    card.desc = cardDesc;
+
+    oauthClient.put(
+      SAVE_CARD_URL,
+      req.accessToken,
+      req.accessTokenSecret,
+      { name: card.name, desc: card.desc, id: card.trelloCardId },
+      "application/json",
+      async (error, data, response) => {
+        if (error) {
+          console.log(
+            "[services/cards] Error while saving data to the provider"
+          );
+          return res.status(400).send(error);
+        }
+
+        console.log("[services/cards] Updated card using provider api");
+
+        await card.save();
+
+        console.log("[services/cards] Updated Card Successfuly");
+        res.send();
+      }
+    );
+  } catch (e) {
+    console.log("[services/cards] Error while saving card");
+    console.log(e);
+    res.status(500).send();
+  }
+};
+
+const deleteCard = async (req, res) => {
+  try {
+    console.log("[services/cards] Deleting Card");
+
+    const id = req.params.id;
+
+    if (!id) {
+      console.log("[services/cards Missing card id");
+      return res.status(400).send({ error: "Missing card id" });
+    }
+
+    const card = await Card.findById(id);
+
+    if (!card) {
+      console.log("[services/cards Card does not exist");
+      return res.status(404).send({ error: "Card does not exist" });
+    }
+
+    oauthClient.delete(
+      SAVE_CARD_URL,
+      req.accessToken,
+      req.accessTokenSecret,
+      { id: card.trelloCardId },
+      "application/json",
+      async (error, data, response) => {
+        if (error) {
+          console.log(
+            "[services/cards] Error while saving data to the provider"
+          );
+          return res.status(400).send(error);
+        }
+
+        console.log("[services/cards] Deleted card using provider api");
+
+        await Card.findByIdAndDelete(card.id);
+
+        console.log("[services/cards] Deleted Card Successfuly");
+        res.send();
+      }
+    );
+  } catch (e) {
+    console.log("[services/cards] Error while deleting card");
+    console.log(e);
+    res.status(500).send();
+  }
+};
+
+module.exports = { getCards, saveCard, updateCard, deleteCard };
