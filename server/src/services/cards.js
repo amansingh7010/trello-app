@@ -4,7 +4,7 @@ const Card = require("../models/card");
 const boardId = "64813725360dd9591ac4b5a4";
 const listId = "648137401f521efa906d4cca";
 
-const SAVE_CARD_URL = `https://api.trello.com/1/cards`;
+const TRELLO_CARDS_API = `https://api.trello.com/1/cards`;
 
 const getCards = async (req, res) => {
   try {
@@ -36,7 +36,7 @@ const saveCard = async (req, res) => {
     // const card = new Card({ name: cardName, desc: cardDesc });
 
     oauthClient.post(
-      SAVE_CARD_URL,
+      TRELLO_CARDS_API,
       req.accessToken,
       req.accessTokenSecret,
       { name: cardName, desc: cardDesc, idList: listId },
@@ -103,10 +103,10 @@ const updateCard = async (req, res) => {
     card.desc = cardDesc;
 
     oauthClient.put(
-      SAVE_CARD_URL,
+      `${TRELLO_CARDS_API}/${card.trelloCardId}`,
       req.accessToken,
       req.accessTokenSecret,
-      { name: card.name, desc: card.desc, id: card.trelloCardId },
+      { name: card.name, desc: card.desc },
       "application/json",
       async (error, data, response) => {
         if (error) {
@@ -150,11 +150,9 @@ const deleteCard = async (req, res) => {
     }
 
     oauthClient.delete(
-      SAVE_CARD_URL,
+      `${TRELLO_CARDS_API}/${card.trelloCardId}`,
       req.accessToken,
       req.accessTokenSecret,
-      { id: card.trelloCardId },
-      "application/json",
       async (error, data, response) => {
         if (error) {
           console.log(

@@ -21,7 +21,7 @@ export class CardsComponent {
     desc: '',
   };
 
-  showNewCardModal = false;
+  showNewCardModal = true;
 
   cards: Card[] = [];
 
@@ -30,25 +30,46 @@ export class CardsComponent {
   }
 
   saveCard(): void {
-    this.cardService.saveCard(this.selectedCard).subscribe(() => {
-      this.getCards();
-      this.showNewCardModal = false;
-      this.selectedCard = {
-        name: '',
-        desc: '',
-      };
-    });
+    if (this.selectedCard._id) {
+      this.cardService.updateCard(this.selectedCard).subscribe(() => {
+        this.getCards();
+        this.showNewCardModal = false;
+        this.selectedCard = {
+          name: '',
+          desc: '',
+        };
+      });
+    } else {
+      this.cardService.saveCard(this.selectedCard).subscribe(() => {
+        this.getCards();
+        this.showNewCardModal = false;
+        this.selectedCard = {
+          name: '',
+          desc: '',
+        };
+      });
+    }
   }
 
   onNewCardButtonClick(): void {
     this.showNewCardModal = true;
+    this.selectedCard = {
+      name: '',
+      desc: '',
+    };
   }
 
   onCancelNewCardButtonClick(): void {
     this.showNewCardModal = false;
+    this.selectedCard = {
+      name: '',
+      desc: '',
+    };
   }
 
-  onSaveCardButtonClick(): void {
-    this.showNewCardModal = false;
+  onCardClick(card: Card): void {
+    console.log(card);
+    this.selectedCard = card;
+    this.showNewCardModal = true;
   }
 }

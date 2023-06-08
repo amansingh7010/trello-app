@@ -32,6 +32,22 @@ export class CardService {
     );
   }
 
+  updateCard(card: Card): Observable<any> {
+    return this.http
+      .put(`${this.cardsUrl}/${card._id}`, card, this.httpOptions)
+      .pipe(
+        tap((_) => console.log('Saved New Card')),
+        catchError(this.handleError<any>('updateCard'))
+      );
+  }
+
+  deleteCard(cardId: string): Observable<any> {
+    return this.http.delete(`${this.cardsUrl}/${cardId}`).pipe(
+      tap((_) => console.log('Saved New Card')),
+      catchError(this.handleError<any>('deleteCard'))
+    );
+  }
+
   /**
    * Handle Http operation that failed.
    * Let the app continue.

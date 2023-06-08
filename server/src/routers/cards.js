@@ -11,10 +11,10 @@ const router = new express.Router();
 
 router.get("/api/cards", auth, getCards);
 
+router.put("/api/cards/:id", auth, updateCard);
+
 router.post("/api/cards", auth, saveCard);
 
-router.put("/api/cards", auth, updateCard);
-
-router.delete("/api/cards", auth, deleteCard);
+router.delete("/api/cards/:id", auth, deleteCard);
 
 module.exports = router;

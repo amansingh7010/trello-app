@@ -21,7 +21,6 @@ export class DashboardComponent {
 
   getDashboardData(): void {
     this.dashboardService.getDashboardData().subscribe((data) => {
-      console.log(data);
       this.userFullName = data.fullName;
     });
   }
