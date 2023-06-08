@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
-import { Card } from '../card';
-import { CARDS } from '../mock-cards';
-import { CardService } from '../card.service';
+import { Card } from './card';
+import { CARDS } from './mock-cards';
+import { CardService } from './card.service';
 
 @Component({
   selector: 'app-cards',

@@ -11,7 +11,7 @@ import { Card } from './card';
 export class CardService {
   constructor(private http: HttpClient) {}
 
-  private cardsUrl = 'http://localhost:9000/cards';
+  private cardsUrl = 'http://localhost:9000/api/cards';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
