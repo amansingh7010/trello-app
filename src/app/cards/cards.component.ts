@@ -79,8 +79,7 @@ export class CardsComponent {
   }
 
   onCardClick(card: Card): void {
-    console.log(card);
-    this.selectedCard = card;
+    this.selectedCard = { ...card };
     this.showNewCardModal = true;
   }
 }

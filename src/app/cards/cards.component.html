@@ -40,7 +40,7 @@
 
   <div
     *ngIf="showNewCardModal"
-    class="fixed h-screen top-0 w-full flex items-center justify-center p-4 overflow-x-hidden backdrop-blur-sm"
+    class="fixed h-screen top-0 right-1 left-1 w-full flex items-center justify-center p-4 overflow-x-hidden backdrop-blur-sm"
   >
     <div class="relative w-full max-w-2xl max-h-full">
       <!-- Modal content -->
@@ -50,7 +50,7 @@
           class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600"
         >
           <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-            Create a New Card
+            {{ selectedCard._id ? "Update Card" : "Create a New Card" }}
           </h3>
           <button
             type="button"
