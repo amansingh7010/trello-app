@@ -21,7 +21,7 @@ export class CardsComponent {
     desc: '',
   };
 
-  showNewCardModal = true;
+  showNewCardModal = false;
 
   cards: Card[] = [];
 
@@ -49,6 +49,17 @@ export class CardsComponent {
         };
       });
     }
+  }
+
+  deleteCard(): void {
+    this.cardService.deleteCard(this.selectedCard._id || '').subscribe(() => {
+      this.getCards();
+      this.showNewCardModal = false;
+      this.selectedCard = {
+        name: '',
+        desc: '',
+      };
+    });
   }
 
   onNewCardButtonClick(): void {
