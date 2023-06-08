@@ -11,6 +11,8 @@ import { Observable, catchError, from } from 'rxjs';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 
+import * as routes from './constants/routes.constants';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -30,7 +32,7 @@ export class AuthInterceptorService implements HttpInterceptor {
         // clear token from localstorage and navigate to login
         if (error && error.status === 401) {
           localStorage.removeItem('token');
-          this.router.navigate(['/login']);
+          this.router.navigate([`/${routes.LOGIN}`]);
         }
       })
     ) as Observable<HttpEvent<any>>;

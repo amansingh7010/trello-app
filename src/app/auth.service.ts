@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+
+import * as apis from './constants/apis.constants';
+import * as routes from './constants/routes.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -10,8 +13,8 @@ import { Router } from '@angular/router';
 export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
-  private loginUrl = 'http://localhost:9000/login';
-  private redirectUrl = 'http://localhost:9000/callback';
+  private loginUrl = `http://localhost:9000/${apis.LOGIN}`;
+  private redirectUrl = `http://localhost:9000/${apis.REDIRECT}`;
 
   isLoggedIn(): boolean {
     const token = localStorage.getItem('token');
@@ -46,7 +49,7 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('token');
-    this.router.navigate(['/login']);
+    this.router.navigate([`/${routes.LOGIN}`]);
   }
 
   /**

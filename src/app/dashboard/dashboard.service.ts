@@ -3,13 +3,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
+import * as apis from '../constants/apis.constants';
+
 @Injectable({
   providedIn: 'root',
 })
 export class DashboardService {
   constructor(private http: HttpClient) {}
 
-  private dashboardUrl = 'http://localhost:9000/api/dashboard';
+  private dashboardUrl = `http://localhost:9000/${apis.DASHBOARD}`;
 
   getDashboardData(): Observable<any> {
     return this.http.get<any>(this.dashboardUrl).pipe(

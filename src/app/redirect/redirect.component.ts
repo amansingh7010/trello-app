@@ -22,7 +22,7 @@ export class RedirectComponent {
   redirect(): void {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.authService.redirect(params).subscribe((data) => {
-        this.router.navigate(['/']);
+        this.router.navigate(['']);
       });
     });
   }
