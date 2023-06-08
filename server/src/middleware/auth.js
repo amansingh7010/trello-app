@@ -10,6 +10,7 @@ const auth = async (req, res, next) => {
     }
 
     req.accessToken = oAuthToken.accessToken;
+    req.accessTokenSecret = oAuthToken.accessTokenSecret;
 
     next();
   } catch (e) {

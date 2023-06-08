@@ -3,6 +3,7 @@ const cors = require("cors");
 
 const authRouter = require("./routers/auth");
 const cardsRouter = require("./routers/cards");
+const dashboardRouter = require("./routers/dashboard");
 
 require("./server/mongoose");
 
@@ -14,5 +15,6 @@ app.use(cors());
 
 app.use(authRouter);
 app.use(cardsRouter);
+app.use(dashboardRouter);
 
 module.exports = app;

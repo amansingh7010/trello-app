@@ -8,6 +8,10 @@ const login = async (req, res) => {
     console.log("[services/auth/login] Login started");
     oauthClient.getOAuthRequestToken(
       async (error, token, tokenSecret, results) => {
+        if (error) {
+          throw new Error(error);
+        }
+
         const oAuthToken = new OAuthToken({ token, tokenSecret });
         await oAuthToken.save();
 
@@ -50,7 +54,9 @@ const callback = async (req, res) => {
       oAuthToken.tokenSecret,
       verifier,
       async (error, accessToken, accessTokenSecret, results) => {
-        console.log(accessToken, accessTokenSecret, results);
+        if (error) {
+          throw new Error(error);
+        }
 
         console.log(
           "[services/auth/callback] Fetched OAuth access token from the provider"
@@ -65,19 +71,6 @@ const callback = async (req, res) => {
         );
 
         res.send({ token: oAuthToken.token });
-
-        // oauthClient.getProtectedResource(
-        //   "https://api.trello.com/1/members/me",
-        //   "GET",
-        //   accessToken,
-        //   accessTokenSecret,
-        //   (error, data, response) => {
-        //     console.log(
-        //       "[services/auth/callback] Fetched user info from the provider"
-        //     );
-        //     res.send(data);
-        //   }
-        // );
       }
     );
   } catch (e) {
