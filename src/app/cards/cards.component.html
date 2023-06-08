@@ -21,10 +21,10 @@
         <h5
           class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
         >
-          {{ card.title | uppercase }}
+          {{ card.name | uppercase }}
         </h5>
         <p class="font-normal text-gray-700 dark:text-gray-400">
-          {{ card.description }}
+          {{ card.desc }}
         </p>
         <p class="font-normal text-gray-700 dark:text-gray-400">
           Created on: {{ card.createdOn | date }}
@@ -63,7 +63,7 @@
               type="text"
               class="bg-gray-50 border mx-2 w-full border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               id="title"
-              [(ngModel)]="card.title"
+              [(ngModel)]="card.name"
             />
           </div>
           <div class="flex my-2">
@@ -71,7 +71,7 @@
             <textarea
               class="bg-gray-50 border mx-2 w-full border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               id="description"
-              [(ngModel)]="card.description"
+              [(ngModel)]="card.desc"
             ></textarea>
           </div>
         </div>

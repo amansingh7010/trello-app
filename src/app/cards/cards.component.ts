@@ -17,8 +17,8 @@ export class CardsComponent {
   }
 
   card: Card = {
-    title: '',
-    description: '',
+    name: '',
+    desc: '',
   };
 
   showNewCardModal = false;
@@ -33,8 +33,8 @@ export class CardsComponent {
     this.cardService.saveCard(this.card).subscribe(() => {
       this.showNewCardModal = false;
       this.card = {
-        title: '',
-        description: '',
+        name: '',
+        desc: '',
       };
     });
   }
