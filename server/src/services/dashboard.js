@@ -10,7 +10,10 @@ const getDashboardData = async (req, res) => {
       req.accessTokenSecret,
       (error, data, response) => {
         if (error) {
-          throw new Error(error);
+          console.log(
+            "[services/dashboard] Error while fetching data the provider"
+          );
+          return res.status(400).send(error);
         }
 
         console.log("[services/dashboard] Fetched user info from the provider");

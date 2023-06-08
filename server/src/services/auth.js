@@ -9,7 +9,10 @@ const login = async (req, res) => {
     oauthClient.getOAuthRequestToken(
       async (error, token, tokenSecret, results) => {
         if (error) {
-          throw new Error(error);
+          console.log(
+            "[services/auth/callback] Error while fetching request token from the provider"
+          );
+          return res.status(400).send(error);
         }
 
         const oAuthToken = new OAuthToken({ token, tokenSecret });
@@ -55,7 +58,10 @@ const callback = async (req, res) => {
       verifier,
       async (error, accessToken, accessTokenSecret, results) => {
         if (error) {
-          throw new Error(error);
+          console.log(
+            "[services/auth/callback] Error while fetching access token from the provider"
+          );
+          return res.status(400).send(error);
         }
 
         console.log(

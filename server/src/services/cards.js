@@ -8,14 +8,14 @@ const SAVE_CARD_URL = `https://api.trello.com/1/cards`;
 
 const getCards = async (req, res) => {
   try {
-    console.log("[services/card] Fetching Cards");
+    console.log("[services/cards] Fetching Cards");
 
     const cards = await Card.find();
 
-    console.log("[services/card] Fetched Cards Successfully");
+    console.log("[services/cards] Fetched Cards Successfully");
     res.send(cards);
   } catch (e) {
-    console.log("[services/card] Error while fetching cards");
+    console.log("[services/cards] Error while fetching cards");
     console.log(e);
     res.status(500).send();
   }
@@ -23,13 +23,13 @@ const getCards = async (req, res) => {
 
 const saveCard = async (req, res) => {
   try {
-    console.log("[services/card] Saving Card");
+    console.log("[services/cards] Saving Card");
 
     const cardName = req.body.name;
     const cardDesc = req.body.desc;
 
     if (!cardName || !cardDesc) {
-      console.log("[services/card] Missing required params");
+      console.log("[services/cards] Missing required params");
       return res.status(400).send({ error: "Missing required params" });
     }
 
@@ -43,11 +43,13 @@ const saveCard = async (req, res) => {
       "application/json",
       async (error, data, response) => {
         if (error) {
-          console.log(error);
-          throw new Error(error);
+          console.log(
+            "[services/cards] Error while saving data to the provider"
+          );
+          return res.status(400).send(error);
         }
 
-        console.log("[services/dashboard] Saved card using provider api");
+        console.log("[services/cards] Saved card using provider api");
 
         const resData = JSON.parse(data);
 
@@ -60,12 +62,12 @@ const saveCard = async (req, res) => {
         });
         await card.save();
 
-        console.log("[services/card] Saved Card Successfuly");
+        console.log("[services/cards] Saved Card Successfuly");
         res.send();
       }
     );
   } catch (e) {
-    console.log("[services/card] Error while saving card");
+    console.log("[services/cards] Error while saving card");
     console.log(e);
     res.status(500).send();
   }
