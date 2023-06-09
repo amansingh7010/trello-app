@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 
 import * as apis from './constants/apis.constants';
 import * as routes from './constants/routes.constants';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -13,8 +14,8 @@ import * as routes from './constants/routes.constants';
 export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
-  private loginUrl = `http://localhost:9000/${apis.LOGIN}`;
-  private redirectUrl = `http://localhost:9000/${apis.REDIRECT}`;
+  private loginUrl = `${environment.apiBaseUrl}/${apis.LOGIN}`;
+  private redirectUrl = `${environment.apiBaseUrl}/${apis.REDIRECT}`;
 
   isLoggedIn(): boolean {
     const token = localStorage.getItem('token');

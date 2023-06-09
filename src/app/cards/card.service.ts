@@ -5,6 +5,7 @@ import { catchError, tap } from 'rxjs/operators';
 
 import { Card } from './card';
 import * as apis from '../constants/apis.constants';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,7 @@ import * as apis from '../constants/apis.constants';
 export class CardService {
   constructor(private http: HttpClient) {}
 
-  private cardsUrl = `http://localhost:9000/${apis.CARDS}`;
+  private cardsUrl = `${environment.apiBaseUrl}/${apis.CARDS}`;
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),

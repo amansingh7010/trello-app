@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
 import * as apis from '../constants/apis.constants';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ import * as apis from '../constants/apis.constants';
 export class DashboardService {
   constructor(private http: HttpClient) {}
 
-  private dashboardUrl = `http://localhost:9000/${apis.DASHBOARD}`;
+  private dashboardUrl = `${environment.apiBaseUrl}/${apis.DASHBOARD}`;
 
   getDashboardData(): Observable<any> {
     return this.http.get<any>(this.dashboardUrl).pipe(
