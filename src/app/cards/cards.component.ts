@@ -29,6 +29,18 @@ export class CardsComponent {
     this.cardService.getCards().subscribe((cards) => (this.cards = cards));
   }
 
+  validate(): boolean {
+    if (
+      !this.selectedCard.name ||
+      this.selectedCard.name === '' ||
+      !this.selectedCard.desc ||
+      this.selectedCard.desc === ''
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   saveCard(): void {
     if (this.selectedCard._id) {
       this.cardService.updateCard(this.selectedCard).subscribe(() => {
