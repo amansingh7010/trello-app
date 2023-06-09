@@ -2,6 +2,10 @@
 
 This application uses Trello OAuth API and MongoDB to perform CRUD operations on a Trello Board.
 
+## Deployment
+
+https://zingy-choux-424964.netlify.app
+
 ---
 
 ## Workflow
